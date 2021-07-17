@@ -60,7 +60,7 @@ int initOpcRedisCnt(redisPool_t **poolTmp, const int maxCntTmp)
             printf("error: null\n");
             return -1;
         }
-        if (REDIS_REPLY_ERROR == reply->type) 
+        if (REDIS_REPLY_ERROR == reply->type)
         {
             printf("error: set database failed, db=%d\n", (*poolTmp)->dataBase);
             freeReplyObject(reply);
@@ -70,7 +70,7 @@ int initOpcRedisCnt(redisPool_t **poolTmp, const int maxCntTmp)
         redisNode_t *newTmp = NULL;
         newTmp = (redisNode_t *)malloc(sizeof(redisNode_t));
         newTmp->conn = conn;
-        ++(*poolTmp)->cntSum; 
+        ++(*poolTmp)->cntSum;
         newTmp->cntIdx = (*poolTmp)->cntSum;
         newTmp->usedFlag = 0;
 
@@ -104,7 +104,7 @@ again:
         redisNode_t *curClient = (*poolTmp)->freePosi;
         (*poolTmp)->freePosi = ((*poolTmp)->freePosi)->next;
         ++((*poolTmp)->used);
-        
+
         pthread_mutex_unlock(&((*poolTmp)->_popMutex));
         return curClient;
     }
@@ -122,13 +122,12 @@ int pushClient(redisPool_t **poolTmp, redisNode_t *curClient)
     pthread_mutex_lock(&((*poolTmp)->_popMutex));
     if (NULL != curClient)
     {
-        if (1 == curClient->usedFlag) 
+        if (1 == curClient->usedFlag)
         {
             curClient->usedFlag = 0;
             curClient->next = (*poolTmp)->freePosi;
             (*poolTmp)->freePosi = curClient;
             --((*poolTmp)->used);
-            
         }
         else
         {
@@ -145,7 +144,7 @@ int pushClient(redisPool_t **poolTmp, redisNode_t *curClient)
 }
 int opcRedisPoolFree(redisPool_t **poolTmp)
 {
-    redisNode_t *tmp = popClient(poolTmp); 
+    redisNode_t *tmp = popClient(poolTmp);
     while (NULL != tmp)
     {
         tmp->cntIdx = -1;
@@ -155,7 +154,7 @@ int opcRedisPoolFree(redisPool_t **poolTmp)
             redisFree(tmp->conn);
         }
         tmp = popClient(poolTmp);
-    } 
+    }
     (*poolTmp)->port = -1;
     (*poolTmp)->dataBase = -1;
     (*poolTmp)->used = 0;

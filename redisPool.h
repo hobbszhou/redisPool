@@ -27,9 +27,9 @@
 #define redisPoolSize 120
 typedef struct _REDIS_NODE_T
 {
-    redisContext *conn; 
-    int cntIdx;         
-    int usedFlag;       
+    redisContext *conn;
+    int cntIdx;
+    int usedFlag;
     struct _REDIS_NODE_T *next;
 } redisNode_t, *pRedisNode_t;
 typedef struct _REDIS_POOL_T
@@ -37,12 +37,12 @@ typedef struct _REDIS_POOL_T
     char ip[STRLEN];
     char passwd[STRLEN];
     int port;
-    int dataBase;     
-    int used;         
-    int maxCnt;       
-    int block;        
-    int cntSum;       
-    int initPoolFlag; 
+    int dataBase;
+    int used;
+    int maxCnt;
+    int block;
+    int cntSum;
+    int initPoolFlag;
     pthread_mutex_t _popMutex;
     pthread_cond_t _pCond;
     redisNode_t *freePosi;
