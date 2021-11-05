@@ -44,10 +44,9 @@
 - **从连接池中取出一个连接进行操作**
 
 ```c
-    redisNode_t *conTmp1 = popClient(&gRpool1); // 从连接池中取出一个连接
+    redisNode_t *conTmp1 = popClient(&gRpool1); // 从连接池1中取出一个连接
     redisReply *reply = redisCommand(conTmp1->conn, "HSET %s %s %s", "aaaaaaaa", "bbbbbbbbbb", "cccccccccc");
-    pushRpoolCnt(conTmp1, key); // 用完记得放入连接池
-
+    pushClient(&gRpool1, conTmp1); // 用完记得放入连接池
 
 ```
 

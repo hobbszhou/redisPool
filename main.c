@@ -17,11 +17,11 @@ int main(int argc, char *argv[])
     }
     redisNode_t *conTmp1 = popClient(&gRpool1); // 从连接池1中取出一个连接
     redisReply *reply = redisCommand(conTmp1->conn, "HSET %s %s %s", "aaaaaaaa", "bbbbbbbbbb", "cccccccccc");
-    pushRpoolCnt(conTmp1, key); // 用完记得放入连接池
+    pushClient(&gRpool1, conTmp1); // 用完记得放入连接池
 
     redisNode_t *conTmp2 = popClient(&gRpool2); // 从连接池1中取出一个连接
     redisReply *reply = redisCommand(conTmp1->conn, "HSET %s %s %s", "aaaaaaaa", "bbbbbbbbbb", "cccccccccc");
-    pushRpoolCnt(conTmp1, key); // 用完记得放入连接池
+    pushClient(&gRpool2, conTmp2); // 用完记得放入连接池
 
     // 彻底释放连接
     opcRedisPoolFree(&gRpool1);
